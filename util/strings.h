@@ -16,7 +16,7 @@
 #include <stdexcept>
 #include <algorithm>
 #include <cstdint>
-
+#include <assert.h>
 #include "util/defines.h"
 
 UTIL_NAMESPACE_BEGIN

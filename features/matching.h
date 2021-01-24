@@ -113,7 +113,7 @@ public:
 
 template <typename T>
 void
-Matching::oneway_match (Options const& options,
+Matching::oneway_match (Matching::Options const& options,
     T const* set_1, int set_1_size,
     T const* set_2, int set_2_size,
     std::vector<int>* result)
@@ -161,15 +161,15 @@ Matching::oneway_match (Options const& options,
 //        float square_dist_2st_best = static_cast<float>(nn_result.dist_2nd_best);
 //        float const square_lowe_thres = MATH_POW2(options.lowe_ratio_threshold);
 
-               /*                  */
-               /*    此处添加代码    */
-               /*                  */
+		////添加代码 by rui
+		//float square_dist_1st_best = static_cast<float>(nn_result.dist_1st_best);
+		//float square_dist_2nd_best = static_cast<float>(nn_result.dist_2nd_best);
+		//float const square_lowe_thres = MATH_POW2(options.lowe_ratio_threshold);
+		//if ((square_dist_1st_best / square_dist_2nd_best) > square_lowe_thres)
+		//	continue;
         /*******************************10696_10015b911522757f6?bizid=10696&txSecret=63384d4bd569e29729b6995dd8a9eefb&txTime=5B93EFB6**********************************/
 
-        if (static_cast<float>(nn_result.dist_1st_best)
-            / static_cast<float>(nn_result.dist_2nd_best)
-            > MATH_POW2(options.lowe_ratio_threshold))
-            continue;
+
         // 匹配成功，feature set1 中第i个特征值对应feature set2中的第index_1st_best个特征点
         result->at(i) = nn_result.index_1st_best;
     }
@@ -177,7 +177,7 @@ Matching::oneway_match (Options const& options,
 
 template <typename T>
 void
-Matching::twoway_match (Options const& options,
+Matching::twoway_match (Matching::Options const& options,
     T const* set_1, int set_1_size,
     T const* set_2, int set_2_size,
     Result* matches)

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (C) 2015, Simon Fuhrmann
  * TU Darmstadt - Graphics, Capture and Massively Parallel Computing
  * All rights reserved.
@@ -18,6 +18,7 @@
 #include "sfm/fundamental.h"
 #include "sfm/correspondence.h"
 #include "math/matrix_svd.h"
+#include <assert.h>
 
 typedef math::Matrix<double, 3, 3> FundamentalMatrix;
 
@@ -40,7 +41,8 @@ int  calc_ransac_iterations (double p,
 
     /** TODO HERE
      * Coding here**/
-    return 0;
+	double num_iterations = std::log(1 - z) / std::log(1 - math::fastpow(p, K));
+    return static_cast<int>(math::round(num_iterations));
 
 
     /** Reference
@@ -144,15 +146,15 @@ void calc_fundamental_least_squares(sfm::Correspondences2D2D const & matches, Fu
         A[i * 9 + 8] = 1.0     * 1.0;
     }
 
-    /* Compute fundamental matrix using SVD. */
+    // Compute fundamental matrix using SVD. */
     std::vector<double> vv(9 * 9);
     math::matrix_svd<double>(&A[0], matches.size(), 9, nullptr, nullptr, &vv[0]);
 
-    /* Use last column of V as solution. */
+    // Use last column of V as solution. */
     for (int i = 0; i < 9; ++i)
         F[i] = vv[i * 9 + 8];
 
-    /* singularity constraint */
+    // singularity constraint */
     math::Matrix<double, 3, 3> U, S, V;
     math::matrix_svd(F, &U, &S, &V);
     S(2,2)=0;
@@ -174,6 +176,16 @@ std::vector<int> find_inliers(sfm::Correspondences2D2D const & matches
      * TODO HERE
      *
      * Coding here **/
+	int i = 0;
+	for (const auto m : matches)
+	{
+		double error=calc_sampson_distance(F, m);
+		if (error < squared_thresh)
+		{
+			inliers.push_back(i);
+		}
+		i++;
+	}
 
     /** Reference
     for(int i=0; i< matches.size(); i++){
@@ -190,9 +202,9 @@ std::vector<int> find_inliers(sfm::Correspondences2D2D const & matches
 
 int main(int argc, char *argv[]){
 
-    /** 加载归一化后的匹配对 */
+    // 加载归一化后的匹配对 */
     sfm::Correspondences2D2D corr_all;
-    std::ifstream in("./examples/task1/correspondences.txt");
+    std::ifstream in("correspondences.txt");
     assert(in.is_open());
 
     std::string line, word;
@@ -216,7 +228,7 @@ int main(int argc, char *argv[]){
         n_line++;
     }
 
-    /* 计算采用次数 */
+	// 计算采用次数 */
     const float inlier_ratio =0.5;
     const int n_samples=8;
     int n_iterations = calc_ransac_iterations(inlier_ratio, n_samples);
@@ -232,7 +244,7 @@ int main(int argc, char *argv[]){
               << "..." << std::endl;
     for(int i=0; i<n_iterations; i++){
 
-        /* 1.0 随机找到8对不重复的匹配点 */
+		// 1.0 随机找到8对不重复的匹配点 */
         std::set<int> indices;
         while(indices.size()<8){
             indices.insert(util::system::rand_int() % corr_all.size());
@@ -252,11 +264,11 @@ int main(int argc, char *argv[]){
             pset2(2, j) = 1.0;
         }
 
-        /*2.0 8点法估计相机基础矩阵*/
+		//2.0 8点法估计相机基础矩阵*/
         FundamentalMatrix F;
         calc_fundamental_8_point(pset1, pset2,F);
 
-        /*3.0 统计所有的内点个数*/
+		//3.0 统计所有的内点个数*/
         std::vector<int> inlier_indices = find_inliers(corr_all, F, inlier_thresh);
 
         if(inlier_indices.size()> best_inliers.size()){
@@ -274,7 +286,7 @@ int main(int argc, char *argv[]){
         corr_f.push_back(corr_all[best_inliers[i]]);
     }
 
-    /*利用所有的内点进行最小二乘估计*/
+	//利用所有的内点进行最小二乘估计*/
     FundamentalMatrix F;
     calc_fundamental_least_squares(corr_f, F);
 

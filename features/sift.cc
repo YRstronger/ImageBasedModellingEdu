@@ -10,6 +10,7 @@
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
+#include<assert.h>
 
 #include "util/timer.h"
 #include "math/functions.h"
@@ -581,25 +582,26 @@ Sift::descriptor_generation (void)
             throw std::runtime_error("Decreasing octave index!");
         }
 
-        /* Orientation assignment. This returns multiple orientations. */
-        /* todo 统计直方图找到特征点主方向,找到几个主方向*/
+        // Orientation assignment. This returns multiple orientations. */
+        // todo 统计直方图找到特征点主方向,找到几个主方向*/
         std::vector<float> orientations;
         orientations.reserve(8);
         this->orientation_assignment(kp, octave, orientations);
+		for (std::size_t j = 0; j < orientations.size(); ++j)
+		{
+			Descriptor desc;
+			float const scale_factor = std::pow(2.0f, kp.octave);
+			desc.x = scale_factor * (kp.x + 0.5f) - 0.5f;
+			desc.y = scale_factor * (kp.y + 0.5f) - 0.5f;
+			desc.scale = this->keypoint_absolute_scale(kp);
+			desc.orientation = orientations[j];
+			if (this->descriptor_assignment(kp, desc, octave))
+				this->descriptors.push_back(desc);
+		}
+		// todo 生成特征向量,同一个特征点可能有多个描述子，为了提升匹配的稳定性
+		// Feature vector extraction. */
 
-        /* todo 生成特征向量,同一个特征点可能有多个描述子，为了提升匹配的稳定性*/
-        /* Feature vector extraction. */
-        for (std::size_t j = 0; j < orientations.size(); ++j)
-        {
-            Descriptor desc;
-            float const scale_factor = std::pow(2.0f, kp.octave);
-            desc.x = scale_factor * (kp.x + 0.5f) - 0.5f;
-            desc.y = scale_factor * (kp.y + 0.5f) - 0.5f;
-            desc.scale = this->keypoint_absolute_scale(kp);
-            desc.orientation = orientations[j];
-            if (this->descriptor_assignment(kp, desc, octave))
-                this->descriptors.push_back(desc);
-        }
+
     }
 }
 
