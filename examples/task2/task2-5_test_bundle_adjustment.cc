@@ -53,7 +53,7 @@ sfm::Correspondences2D2D sift_feature_matching(sfm::FeatureSet &feat1
         , sfm::FeatureSet&feat2)
 {
 
-    /* 1.0 特征匹配*/
+	// 1.0 特征匹配*/
     // 进行数据转换
     util::AlignedMemory<math::Vec128f, 16> aligned_descrs1, aligned_descrs2;
     convert_sift_discriptors(feat1.sift_descriptors, &aligned_descrs1);
@@ -78,7 +78,7 @@ sfm::Correspondences2D2D sift_feature_matching(sfm::FeatureSet &feat1
               << n_consitent_matches
               << std::endl;
 
-    /*2.0 利用本征矩阵对数据进行*/
+	//2.0 利用本征矩阵对数据进行*/
     // 进行特征点坐标归一化，归一化之后坐标中心位于(0,0), 范围[-0.5, 0.5]。坐标归一化有助于
     // 保持计算的稳定性
     feat1.normalize_feature_positions();
@@ -98,7 +98,7 @@ sfm::Correspondences2D2D sift_feature_matching(sfm::FeatureSet &feat1
 
         corr_all.push_back(c2d2d);
     }
-    /* RANSAC 估计本征矩阵, 并对特征匹配对进行筛选*/
+    // RANSAC 估计本征矩阵, 并对特征匹配对进行筛选*/
     sfm::RansacFundamental::Options ransac_fundamental_opts;
     ransac_fundamental_opts.max_iterations =1000;
     ransac_fundamental_opts.verbose_output = true;
@@ -169,7 +169,7 @@ main (int argc, char *argv[])
         return 1;
     }
 
-    /* 1.0 加载图像. */
+	// 1.0 加载图像. */
     std::string fname1(argv[1]);
     std::string fname2(argv[2]);
     std::cout << "Loading " << fname1 << "..." << std::endl;
@@ -184,12 +184,12 @@ main (int argc, char *argv[])
         img2=core::image::rescale_half_size<uint8_t>(img2);
     }
 
-    /* 提取相机焦距*/
+	// 提取相机焦距*/
     float f1  = extract_focal_len(argv[1]);
     float f2 = extract_focal_len(argv[2]);
     std::cout<<"focal length: f1 "<<f1<<" f2: "<<f2<<std::endl;
 
-    /*2.0 计算sift特征点 */
+	//2.0 计算sift特征点 */
     sfm::FeatureSet::Options feature_set_opts;
     feature_set_opts.feature_types = sfm::FeatureSet::FEATURE_SIFT;
     feature_set_opts.sift_opts.verbose_output = true;

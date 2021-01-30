@@ -71,7 +71,7 @@ photometric_outlier_detection(std::vector<ProjectedFaceInfo> * infos, Settings c
             return false;
         }
 
-        /* Calculate the inliers' mean color and color covariance. */
+		// Calculate the inliers' mean color and color covariance. */
         var_mean = inliers.colwise().mean();
         Eigen::MatrixX3d centered = inliers.rowwise() - var_mean;
         covariance = (centered.adjoint() * centered) / double(inliers.rows() - 1);
@@ -93,13 +93,13 @@ photometric_outlier_detection(std::vector<ProjectedFaceInfo> * infos, Settings c
         }
         covariance_inv = lu.inverse();
 
-        /* Compute new number of inliers (all views with a gauss value above a threshold). */
+        // Compute new number of inliers (all views with a gauss value above a threshold). */
         for (std::size_t row = 0; row < infos->size(); ++row) {
             Eigen::RowVector3d color = mve_to_eigen(infos->at(row).mean_color).cast<double>();
             double gauss_value = multi_gauss_unnormalized(color, var_mean, covariance_inv);
             is_inlier[row] = (gauss_value >= gauss_rejection_threshold ? 1 : 0);
         }
-        /* Resize Eigen matrix accordingly and fill with new inliers. */
+		// Resize Eigen matrix accordingly and fill with new inliers. */
         inliers.resize(std::accumulate(is_inlier.begin(), is_inlier.end(), 0), Eigen::NoChange);
         for (std::size_t row = 0, inlier_row = 0; row < infos->size(); ++row) {
             if (is_inlier[row]) {
@@ -286,7 +286,7 @@ calculate_data_costs(core::TriangleMesh::ConstPtr mesh, std::vector<TextureView>
         face_counter.inc();
     }
 
-    /* Determine the function for the normlization. */
+	// Determine the function for the normlization. */
     float max_quality = 0.0f;
     for (std::size_t i = 0; i < projected_face_infos.size(); ++i)
         for (std::size_t j = 0; j < projected_face_infos[i].size(); ++j)
@@ -299,7 +299,7 @@ calculate_data_costs(core::TriangleMesh::ConstPtr mesh, std::vector<TextureView>
 
     float percentile = hist_qualities.get_approx_percentile(0.995f);
 
-    /* Calculate the costs. */
+	// Calculate the costs. */
     assert(num_faces < std::numeric_limits<std::uint32_t>::max());
     assert(num_views < std::numeric_limits<std::uint16_t>::max());
     assert(MRF_MAX_ENERGYTERM < std::numeric_limits<float>::max());
@@ -307,13 +307,13 @@ calculate_data_costs(core::TriangleMesh::ConstPtr mesh, std::vector<TextureView>
         for (std::size_t j = 0; j < projected_face_infos[i].size(); ++j) {
             ProjectedFaceInfo const & info = projected_face_infos[i][j];
 
-            /* Clamp to percentile and normalize. */
+			// Clamp to percentile and normalize. */
             float normalized_quality = std::min(1.0f, info.quality / percentile);
             float data_cost = (1.0f - normalized_quality) * MRF_MAX_ENERGYTERM;
             data_costs->set_value(i, info.view_id, data_cost);
         }
 
-        /* Ensure that all memory is freeed. */
+		// Ensure that all memory is freeed. */
         projected_face_infos[i].clear();
         projected_face_infos[i].shrink_to_fit();
     }

@@ -100,7 +100,7 @@ PatchSampler::fastColAndDeriv(std::size_t v, Samples& color, Samples& deriv)
     }
     mmLevel = views[v]->clampLevel(mmLevel);
 
-    /* compute step size for derivative */
+	// compute step size for derivative */
     math::Vec3f p1(p0 + masterViewDirs[nrSamples/2]);
     float d = (views[v]->worldToScreen(p1, mmLevel)
         - views[v]->worldToScreen(patchPoints[12], mmLevel)).norm();
@@ -109,7 +109,7 @@ PatchSampler::fastColAndDeriv(std::size_t v, Samples& color, Samples& deriv)
     }
     stepSize[v] = 1.f / d;
 
-    /* request according undistorted color image */
+	// request according undistorted color image */
     core::ByteImage::ConstPtr img(views[v]->getPyramidImg(mmLevel));
     int const w = img->width();
     int const h = img->height();
@@ -130,12 +130,12 @@ PatchSampler::fastColAndDeriv(std::size_t v, Samples& color, Samples& deriv)
         gradDir[i] = views[v]->worldToScreen(p1, mmLevel) - imgPos[i];
     }
 
-    /* draw the samples in the image */
+	// draw the samples in the image */
     color.resize(nrSamples, math::Vec3f(0.f));
     deriv.resize(nrSamples, math::Vec3f(0.f));
     colAndExactDeriv(*img, imgPos, gradDir, color, deriv);
 
-    /* normalize the gradient */  //fixme?? 为什么要进行归一化
+	//normalize the gradient */  //fixme?? 为什么要进行归一化
     for (std::size_t i = 0; i < nrSamples; ++i)
         deriv[i] /= stepSize[v];
 

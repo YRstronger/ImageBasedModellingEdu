@@ -42,27 +42,27 @@ public:
         float _dzI,
         float _dzJ);
 
-    /** Smart pointer PatchSampler constructor. */
+	//* Smart pointer PatchSampler constructor. */
     static PatchSampler::Ptr create(std::vector<SingleView::Ptr> const& views,
         Settings const& settings, int x, int _y,
         float _depth, float _dzI, float _dzJ);
 
-    /** Draw color samples and derivatives in neighbor view v */
+	//* Draw color samples and derivatives in neighbor view v */
     void fastColAndDeriv(std::size_t v, Samples & color, Samples& deriv);
 
-    /** Compute NCC between reference view and a neighbor view */
+	//* Compute NCC between reference view and a neighbor view */
     float getFastNCC(std::size_t v);
 
-    /**获取参考视角中样本点的颜色值 */
+	//*获取参考视角中样本点的颜色值 */
     Samples const& getMasterColorSamples() const;
 
-    /**获取参考视角的的平均颜色值*/
+	//*获取参考视角的的平均颜色值*/
     float getMasterMeanColor() const;
 
-    /**Patch的中心点对应的三维点*/
+	//*Patch的中心点对应的三维点*/
     math::Vec3f const & getMidWorldPoint() const;
 
-    /** Compute NCC between two neighboring views */
+	//* Compute NCC between two neighboring views */
     float getNCC(std::size_t u, std::size_t v);
 
     /** Computes the sum of absolute differences between reference
@@ -73,13 +73,13 @@ public:
         view and neighbor v with respect to color scale cs */
     float getSSD(std::size_t v, math::Vec3f const& cs);
 
-    /**获取邻域视角的的样本点颜色*/
+	//*获取邻域视角的的样本点颜色*/
     Samples const& getNeighColorSamples(std::size_t v);
 
-    /**获取样本点的个数*/
+	//*获取样本点的个数*/
     std::size_t getNrSamples() const;
 
-    /**获取patch的法向量*/
+	//*获取patch的法向量*/
     math::Vec3f getPatchNormal() const;
 
     /**是否采样成功*/

@@ -68,7 +68,7 @@ Octree::Node*
 Octree::Iterator::next_bread_first(void)
 {
     /*todo implement bread first search here*/
-
+	return nullptr;
 }
 
 Octree::Node*
