@@ -3,13 +3,14 @@ project(ImageBasedModellingEdu)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/" ${CMAKE_MODULE_PATH})
 
 # Eigen (required)
-find_package(Eigen REQUIRED)
+#find_package(Eigen REQUIRED)
+set(EIGEN_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/eigen-3.3.7/eigen3_3_7")
 include_directories(${EIGEN_INCLUDE_DIRS})
 add_definitions(-DEIGEN_USE_NEW_STDVECTOR -DEIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET)
 
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "-fPIC")
+#set(CMAKE_CXX_FLAGS "-fPIC")
 
 add_subdirectory(core)
 add_subdirectory(util)

@@ -4,7 +4,7 @@ set(CMAKE_CXX_FLAGS "-fPIC")
 
 
 # find linpng
-find_package(PNG REQUIRED)
+#find_package(PNG REQUIRED)
 if(PNG_FOUND)
     message("PNG found: ${PNG_LIBRARIES}")
     include_directories(${PNG_INCLUDE_DIRS})
@@ -12,14 +12,14 @@ if(PNG_FOUND)
 endif()
 
 # find libjpeg
-find_package(JPEG REQUIRED)
+#find_package(JPEG REQUIRED)
 if(JPEG_FOUND)
     message("JPEG found: ${JPEG_LIBRARIES}")
     include_directories(${JPEG_INCLUDE_DIR})
 endif()
 
 # find libtiff
-find_package(TIFF REQUIRED)
+#find_package(TIFF REQUIRED)
 if(TIFF_FOUND)
     message("TIFF found: ${TIFF_LIBRARIES}")
     include_directories(${TIFF_INCLUDE_DIR})
