@@ -864,21 +864,21 @@ int main(int argc, char* argv[])
 {
 
 	//加载数据 */
-    load_data("./examples/task2/test_ba.txt",cameras, points, observations);
+    load_data("test_ba.txt",cameras, points, observations);
 
     lm_optimization(&cameras, &points, &observations);
 
     // ba优化
-//    sfm::ba::BundleAdjustment::Options ba_opts;
-//    ba_opts.verbose_output = true;
-//    ba_opts.lm_mse_threshold = 1e-16;
-//    ba_opts.lm_delta_threshold = 1e-8;
-//    sfm::ba::BundleAdjustment ba(ba_opts);
-//    ba.set_cameras(&cameras);
-//    ba.set_points(&points);
-//    ba.set_observations(&observations);
-//    ba.optimize();
-//    ba.print_status();
+    sfm::ba::BundleAdjustment::Options ba_opts;
+    ba_opts.verbose_output = true;
+    ba_opts.lm_mse_threshold = 1e-16;
+    ba_opts.lm_delta_threshold = 1e-8;
+    sfm::ba::BundleAdjustment ba(ba_opts);
+    ba.set_cameras(&cameras);
+    ba.set_points(&points);
+    ba.set_observations(&observations);
+    ba.optimize();
+    ba.print_status();
 
     // 将优化后的结果重新赋值
     std::vector<sfm::CameraPose> new_cam_poses(2);
@@ -909,10 +909,10 @@ int main(int argc, char* argv[])
     std::cout<<"  t: "<<new_cam_poses[1] .t<<std::endl;
 
 
-    std::cout<<"points 3d: "<<std::endl;
-    for(int i=0; i<points.size(); i++) {
-        std::cout<<points[i].pos[0]<<", "<<points[i].pos[1]<<", "<<points[i].pos[2]<<std::endl;
-    }
+    //std::cout<<"points 3d: "<<std::endl;
+    //for(int i=0; i<points.size(); i++) {
+    //    std::cout<<points[i].pos[0]<<", "<<points[i].pos[1]<<", "<<points[i].pos[2]<<std::endl;
+    //}
 
 //    Params after BA:
 //    f: 0.919446

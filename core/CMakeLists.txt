@@ -1,6 +1,6 @@
 project(core)
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "-fPIC")
+#set(CMAKE_CXX_FLAGS "-fPIC")
 
 
 # find linpng
@@ -75,4 +75,6 @@ set(SOURCE_FILES
         )
 add_library(core ${HEADERS} ${SOURCE_FILES})
 target_link_libraries(core util ${PNG_LIBRARIES} ${JPEG_LIBRARIES} ${TIFF_LIBRARIES})
+
+ADD_DEFINITIONS(-NONMINMAX)
 
