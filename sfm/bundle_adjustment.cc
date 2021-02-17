@@ -94,19 +94,19 @@ BundleAdjustment::lm_optimize (void)
             break;
         }
 
-        /* Compute Jacobian. */ // todo 计算雅各比矩阵
+        // Compute Jacobian. */ // todo 计算雅各比矩阵
         SparseMatrixType Jc, Jp;
         switch (this->opts.bundle_mode)
         {
-            /*同时优化相机和三维点*/
+            //同时优化相机和三维点*/
             case BA_CAMERAS_AND_POINTS:
                 this->analytic_jacobian(&Jc, &Jp);
                 break;
-            /*固定三维点，只优化相机参数*/
+            //固定三维点，只优化相机参数*/
             case BA_CAMERAS:
                 this->analytic_jacobian(&Jc, nullptr);
                 break;
-            /*固定相机优化三维点的坐标*/
+            //固定相机优化三维点的坐标*/
             case BA_POINTS:
                 this->analytic_jacobian(nullptr, &Jp);
                 break;

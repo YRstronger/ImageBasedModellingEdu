@@ -49,3 +49,5 @@ set(POSE_FROM_FUNDAMENTAL
         )
 add_executable(task6_test_pose_from_fundamental ${POSE_FROM_FUNDAMENTAL} )
 target_link_libraries(task6_test_pose_from_fundamental sfm util core features )
+
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)

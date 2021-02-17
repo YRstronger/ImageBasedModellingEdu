@@ -312,6 +312,7 @@ int main(int argc, char *argv[])
 
         /// Run single-camera bundle adjustment. */
         std::cout << "Running single camera bundle adjustment..." << std::endl;
+		std::cout << "next view id: " << next_view_id << std::endl;
         incremental.bundle_adjustment_single_cam(next_view_id);
         num_cameras_reconstructed += 1;
 
