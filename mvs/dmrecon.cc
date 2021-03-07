@@ -424,13 +424,13 @@ DMRecon::processQueue()
             continue ;
         }
 
-        /**进行patch 优化**/
+        //进行patch 优化**/
         PatchOptimization patch(views, settings, x, y, tmpData.depth,
             tmpData.dz_i, tmpData.dz_j, neighViews, tmpData.localViewIDs);
         patch.doAutoOptimization();
         tmpData.confidence = patch.computeConfidence();
 
-        /*优化后的confidence<0 则抛除*/
+        //优化后的confidence<0 则抛除*/
         if (tmpData.confidence == 0) {
             continue;
         }
