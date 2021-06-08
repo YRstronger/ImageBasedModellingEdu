@@ -552,6 +552,7 @@ private:
 	
 	void setupNeighbData(SiteID startY,SiteID endY,SiteID startX,SiteID endX,SiteID maxInd,SiteID *indexes);
 	void computeNeighborWeights(EnergyTermType *vCosts,EnergyTermType *hCosts);
+
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
